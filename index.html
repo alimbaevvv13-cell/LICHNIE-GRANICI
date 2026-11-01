@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Личные границы — тренинг-игра</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;700;800&display=swap">
+<style>
+:root{--bg:#eef3f6;--card:#fff;--ink:#14232e;--mut:#56687a;--line:#d5dfe6;--b:#3b5bdb;--r:#d6336c;--p:#2b9a66;--ok:#e3f5ec;--okl:#2b9a66;--mid:#fff4db;--midl:#b7791f;--bad:#fde8e8;--badl:#c53030;--btn:#14232e;--btnt:#fff;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f1a22;--card:#17262f;--ink:#e8f0f5;--mut:#9db0bf;--line:#2a3d49;--b:#7b93ff;--r:#f783ac;--p:#5fd69b;--ok:#143427;--okl:#5fd69b;--mid:#3a2f14;--midl:#f2c46b;--bad:#3a1b1b;--badl:#ff8f8f;--btn:#e8f0f5;--btnt:#0f1a22;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0f1a22;--card:#17262f;--ink:#e8f0f5;--mut:#9db0bf;--line:#2a3d49;--b:#7b93ff;--r:#f783ac;--p:#5fd69b;--ok:#143427;--okl:#5fd69b;--mid:#3a2f14;--midl:#f2c46b;--bad:#3a1b1b;--badl:#ff8f8f;--btn:#e8f0f5;--btnt:#0f1a22;color-scheme:dark}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 17px/1.55 Onest,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+main{max-width:720px;margin:0 auto;padding:20px 16px 48px}
+h1{font-size:clamp(28px,6vw,40px);line-height:1.1;margin:0 0 12px;font-weight:800;letter-spacing:-.02em}
+h2{font-size:22px;margin:0 0 8px;font-weight:700;line-height:1.25}
+h3{font-size:17px;margin:0 0 4px;font-weight:700}
+p{margin:0 0 12px}
+.mut{color:var(--mut)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:20px;margin-bottom:14px}
+.btn{font:700 17px Onest,system-ui,sans-serif;background:var(--btn);color:var(--btnt);border:0;border-radius:14px;padding:14px 22px;cursor:pointer;min-height:48px}
+.btn:focus-visible,.opt:focus-visible{outline:3px solid var(--b);outline-offset:2px}
+.top{display:flex;align-items:center;gap:16px;margin-bottom:14px}
+.top .info{flex:1;min-width:0}
+.bar{height:8px;background:var(--line);border-radius:8px;overflow:hidden;margin-top:8px}
+.bar i{display:block;height:100%;background:var(--ink);border-radius:8px;transition:width .4s}
+.styles{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));margin:16px 0}
+.st{border-radius:14px;padding:14px;border:1px solid var(--line)}
+.st.a{background:var(--mid)}.st.b{background:var(--bad)}.st.c{background:var(--ok)}
+.emoji{font-size:40px;line-height:1;margin-bottom:8px}
+.opt{display:block;width:100%;text-align:left;font:500 16px/1.45 Onest,system-ui,sans-serif;color:var(--ink);background:var(--card);border:2px solid var(--line);border-radius:14px;padding:14px 16px;margin-bottom:10px;cursor:pointer}
+.opt:hover:not(:disabled){border-color:var(--b)}
+.opt:disabled{cursor:default}
+.opt.sel{border-color:var(--ink)}
+.tag{display:inline-block;font-weight:700;font-size:14px;padding:3px 10px;border-radius:20px;margin-bottom:8px}
+.t-ok{background:var(--ok);color:var(--okl)}.t-mid{background:var(--mid);color:var(--midl)}.t-bad{background:var(--bad);color:var(--badl)}
+.fb{border-left:5px solid var(--line);padding:4px 0 4px 14px;margin:14px 0}
+.fb.t-ok{border-color:var(--okl);background:none}.fb.t-mid{border-color:var(--midl);background:none}.fb.t-bad{border-color:var(--badl);background:none}
+.pts{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 16px;font-weight:700;font-size:15px}
+.pts span{padding:3px 10px;border-radius:20px;border:1px solid var(--line)}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:14px;color:var(--mut)}
+.legend b{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:5px}
+.meter{margin:12px 0}
+.meter .row{display:flex;justify-content:space-between;font-weight:700}
+.meter .bar{height:12px}
+.hero{display:flex;flex-direction:column;align-items:center;text-align:center}
+.formula{background:var(--ok);border-radius:14px;padding:14px 16px;margin:10px 0}
+ol,ul{padding-left:22px;margin:0 0 12px}li{margin-bottom:6px}
+.theme{position:fixed;right:12px;top:calc(env(safe-area-inset-top,0px) + 8px);background:var(--card);border:1px solid var(--line);color:var(--ink);border-radius:20px;width:40px;height:40px;cursor:pointer;font-size:18px}
+@media (prefers-reduced-motion:reduce){.bar i{transition:none}}
+</style>
+</head>
+<body>
+<button class="theme" id="theme" aria-label="Сменить тему">◐</button>
+<main id="app"></main>
+<script>
+var STY={
+ u:{n:"Уверенно",c:"t-ok"},p:{n:"Пассивно",c:"t-mid"},a:{n:"Агрессивно",c:"t-bad"},
+ m:{n:"Манипуляция",c:"t-bad"},pa:{n:"Пассивная агрессия",c:"t-mid"},r:{n:"С уважением",c:"t-ok"}
+};
+var SC=[
+{e:"📱",t:"Чужие руки в телефоне",s:"Друг без спроса взял твой телефон и листает переписки. Ты замечаешь это.",o:[
+ {x:"«Мне неприятно, когда берут телефон без спроса. Верни, пожалуйста. Если что-то нужно посмотреть — спроси, и я решу».",y:"u",pt:[2,2,2],f:"Ты назвал границу, не обвиняя человека, и оставил путь к договорённости: «спроси — и я решу»."},
+ {x:"Промолчать и сделать вид, что всё нормально: не хочется ссориться.",y:"p",pt:[0,1,1],f:"Мир сохранён, но граница нарушена, и друг не узнает, что это неприемлемо. Накопленная обида потом выльется иначе."},
+ {x:"Выхватить телефон и крикнуть: «Ты совсем обнаглел?! Больше с тобой не общаюсь!»",y:"a",pt:[1,0,0],f:"Граница защищена, но ценой унижения и угроз. Вместо разговора получился скандал."}]},
+{e:"📚",t:"Ещё одна просьба",s:"Одногруппник в который раз просит сделать за него часть работы: «В последний раз!» У тебя свои дедлайны.",o:[
+ {x:"«Сейчас не могу — у меня свои сроки. Могу показать, как это делается, или помочь в пятницу полчаса».",y:"u",pt:[2,2,2],f:"Отказ без чувства вины и с предложением, которое не ломает твои границы. Помощь — это выбор, а не обязанность."},
+ {x:"«Ладно, сделаю…» — хотя сил нет.",y:"p",pt:[0,1,0],f:"Согласие через силу формирует привычку: просить будут снова. Страдают и твои дела, и ваши отношения."},
+ {x:"«Хватит на мне ездить! Ты вообще сам ничего не умеешь!»",y:"a",pt:[1,0,0],f:"Оценка личности («ты не умеешь») запускает защиту и ссору. Критикуй ситуацию и просьбу, а не человека."}]},
+{e:"🤗",t:"Неудобные объятия",s:"Знакомый при каждой встрече обнимает тебя, хотя тебе это неприятно. Он делает это не со зла.",o:[
+ {x:"Протянуть руку для рукопожатия и сказать: «Я предпочитаю здороваться без объятий. Спасибо, что поймёшь».",y:"u",pt:[2,2,2],f:"Телесные границы принадлежат только тебе. Спокойное «нет» без объяснений — полностью достаточно."},
+ {x:"Терпеть, чтобы не обидеть человека.",y:"p",pt:[0,1,1],f:"Заботиться о чувствах других важно, но не за счёт собственного комфорта. Самому себе тоже нужно уважение."},
+ {x:"Оттолкнуть и резко бросить: «Не лезь ко мне!»",y:"a",pt:[1,0,0],f:"Твоё право сказать «нет» бесспорно, но резкость превращает его в конфликт. Можно твёрдо и спокойно."}]},
+{e:"💬",t:"Фото в общем чате",s:"Кто-то выложил в общий чат твоё нелепое фото без разрешения. Несколько человек уже смеются.",o:[
+ {x:"Написать лично: «Мне не нравится, что фото в чате без моего согласия. Удали, пожалуйста, и впредь спрашивай». Если не удалит — обратиться к администратору или руководителю.",y:"u",pt:[2,2,2],f:"Цифровые границы — тоже границы. Личный разговор даёт шанс исправить ситуацию без публичной войны, а помощь взрослых или администратора — законный следующий шаг."},
+ {x:"Написать в чат «ха-ха, смешно», а внутри переживать.",y:"p",pt:[0,1,1],f:"Шутка в ответ — способ спрятать обиду. Но так другие понимают, что можно продолжать."},
+ {x:"Выложить в ответ фото обидчика и написать оскорбительный комментарий.",y:"a",pt:[0,0,0],f:"Месть превращает вас обоих в нарушителей границ и разгоняет конфликт на весь чат."}]},
+{e:"🔥",t:"Спор на повышенных тонах",s:"На обсуждении проекта собеседник перебивает тебя и повышает голос. Эмоции накаляются.",o:[
+ {x:"Сделать паузу и сказать: «Давай по очереди: я выслушаю тебя, потом ты меня. Нам важно найти решение, а не победить».",y:"u",pt:[2,2,2],f:"Пауза, очерёдность и общая цель — основа мирного разрешения конфликта. Вы спорите о проблеме, а не друг с другом."},
+ {x:"Повысить голос в ответ, чтобы тебя услышали.",y:"a",pt:[1,0,0],f:"Крик в ответ — это эскалация. Когда говорят двое сразу, никто не слышит."},
+ {x:"Замолчать и согласиться со всем, лишь бы это закончилось.",y:"p",pt:[0,1,1],f:"Конфликт закончился, но проблема осталась, а твоя позиция не прозвучала. Позже она вернётся."}]},
+{e:"🛑",t:"Тебе сказали «нет»",s:"Друг отказывается идти с тобой в кино: «Не хочу сегодня». Ты расстроен, ведь уже всё придумал.",o:[
+ {x:"«Жаль, но это твоё право. Давай договоримся на другой день?»",y:"r",pt:[2,2,2],f:"Ты признал право друга на отказ и честно назвал своё чувство. Уважать чужие границы так же важно, как защищать свои."},
+ {x:"«Ну пожалуйста! Друг ты мне или нет? Я же для тебя всегда…»",y:"m",pt:[0,0,0],f:"Давление и вина — это манипуляция. Так отнимают право выбора и подрывают доверие."},
+ {x:"Сказать «ладно», а потом демонстративно молчать и дуться весь вечер.",y:"pa",pt:[1,0,0],f:"Обида без слов — скрытое наказание. Скажи прямо: «Мне обидно, но я понимаю»."}]}
+];
+var K=[["b","Границы","#3b5bdb","Умение замечать и защищать своё"],["r","Уважение","#d6336c","Принимать чужое «нет» и чувства"],["p","Мир","#2b9a66","Решать конфликт без войны"]];
+var st,app=document.getElementById("app");
+function shuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t}return a}
+function ring(sc,size){var R=[44,33,22],h="";
+ K.forEach(function(k,i){var L=2*Math.PI*R[i],v=Math.min(sc[i]/12,1);
+  h+='<circle cx="50" cy="50" r="'+R[i]+'" fill="none" stroke="var(--line)" stroke-width="7"/><circle cx="50" cy="50" r="'+R[i]+'" fill="none" stroke="'+k[2]+'" stroke-width="7" stroke-linecap="round" stroke-dasharray="'+(L*v)+' '+L+'" transform="rotate(-90 50 50)" style="transition:stroke-dasharray .5s"/>'});
+ return '<svg width="'+size+'" height="'+size+'" viewBox="0 0 100 100" role="img" aria-label="Кольцо личного пространства">'+h+'</svg>'}
+function start(){st={i:0,sc:[0,0,0],done:false,ua:0};intro()}
+function intro(){
+ app.innerHTML='<div class="hero card"><div style="margin:4px 0 14px">'+ring([8,10,12],120)+'</div><h1>Личные границы и культура взаимоотношений</h1><p class="mut">Тренинг-игра: 6 жизненных ситуаций. В каждой выбери реакцию — и посмотри, что она даёт тебе и отношениям.</p></div>'+
+ '<div class="card"><h2>Три способа реагировать</h2><div class="styles"><div class="st a"><h3>Пассивно</h3><p style="margin:0">Промолчать, уступить. Мир есть, граница потеряна.</p></div><div class="st b"><h3>Агрессивно</h3><p style="margin:0">Давить, кричать, обвинять. Граница есть, отношения под ударом.</p></div><div class="st c"><h3>Уверенно</h3><p style="margin:0">Спокойно сказать о себе и услышать другого.</p></div></div>'+
+ '<h3>Вокруг тебя — три кольца</h3><div class="legend"><span><b style="background:#3b5bdb"></b>Границы</span><span><b style="background:#d6336c"></b>Уважение</span><span><b style="background:#2b9a66"></b>Мир</span></div><p class="mut" style="margin-top:10px">Хорошие решения наполняют их. В каждой ситуации можно получить до 2 очков в каждом кольце.</p><button class="btn" id="go">Начать игру</button></div>';
+ document.getElementById("go").onclick=function(){scene()}}
+function scene(){
+ var s=SC[st.i];st.opts=shuffle(s.o);st.done=false;
+ var h='<div class="top"><div>'+ring(st.sc,76)+'</div><div class="info"><div class="mut" style="font-size:15px">Ситуация '+(st.i+1)+' из '+SC.length+'</div><div class="bar"><i style="width:'+(st.i/SC.length*100)+'%"></i></div></div></div>';
+ h+='<div class="card"><div class="emoji" aria-hidden="true">'+s.e+'</div><h2>'+s.t+'</h2><p>'+s.s+'</p><p class="mut" style="margin-bottom:14px">Что ты сделаешь?</p><div id="opts">';
+ st.opts.forEach(function(o,i){h+='<button class="opt" data-i="'+i+'">'+o.x+'</button>'});
+ h+='</div><div id="fbox"></div></div>';
+ app.innerHTML=h;window.scrollTo(0,0);
+ [].forEach.call(document.querySelectorAll(".opt"),function(b){b.onclick=function(){pick(+b.dataset.i)}})}
+function pick(i){
+ if(st.done)return;st.done=true;
+ var o=st.opts[i],y=STY[o.y];
+ for(var k=0;k<3;k++)st.sc[k]+=o.pt[k];
+ if(o.y==="u"||o.y==="r")st.ua++;
+ [].forEach.call(document.querySelectorAll(".opt"),function(b,j){b.disabled=true;if(j===i)b.classList.add("sel")});
+ var last=st.i===SC.length-1;
+ document.getElementById("fbox").innerHTML='<div class="fb '+y.c+'"><span class="tag '+y.c+'">'+y.n+'</span><p style="margin:0">'+o.f+'</p></div>'+
+ '<div class="pts"><span style="color:var(--b)">Границы +'+o.pt[0]+'</span><span style="color:var(--r)">Уважение +'+o.pt[1]+'</span><span style="color:var(--p)">Мир +'+o.pt[2]+'</span></div>'+
+ (o.y==="u"||o.y==="r"?"":'<p class="mut">Лучший вариант здесь: «'+best().x+'»</p>')+
+ '<button class="btn" id="nx">'+(last?"Посмотреть результат":"Дальше")+'</button>';
+ document.getElementById("nx").onclick=function(){if(last){result()}else{st.i++;scene()}};
+ document.getElementById("nx").focus()}
+function best(){return SC[st.i].o.filter(function(o){return o.y==="u"||o.y==="r"})[0]}
+function title(t){return t>=31?["Мастер здоровых границ","Ты чётко говоришь о себе и уважаешь других. Это основа доверия и мирных отношений."]:t>=24?["Уверенный дипломат","Ты хорошо справляешься с большинством ситуаций. Осталось отточить отдельные навыки."]:t>=16?["На пути к уверенности","Ты уже видишь, где граница. Попробуй чаще говорить о своих чувствах спокойно и прямо."]:["Начало пути","Это нормальная точка старта: границам учатся. Пройди игру ещё раз и сравни результаты."]}
+function result(){
+ var t=st.sc[0]+st.sc[1]+st.sc[2],ti=title(t);
+ var h='<div class="hero card"><div style="margin-bottom:10px">'+ring(st.sc,160)+'</div><h1>'+ti[0]+'</h1><p>'+ti[1]+'</p><p class="mut">Очки: <b>'+t+'</b> из 36. Уверенных решений: '+st.ua+' из 6.</p></div><div class="card"><h2>Твои навыки</h2>';
+ K.forEach(function(k,i){var v=st.sc[i];h+='<div class="meter"><div class="row"><span style="color:'+k[2]+'">'+k[1]+'</span><span>'+v+' / 12</span></div><div class="bar"><i style="width:'+(v/12*100)+'%;background:'+k[2]+'"></i></div><div class="mut" style="font-size:15px;margin-top:4px">'+k[3]+'</div></div>'});
+ var low=st.sc.indexOf(Math.min.apply(null,st.sc)),adv=["Практика: в этот раз называй чувство и просьбу вслух: «Мне неприятно… Прошу…».","Практика: прежде чем настаивать, спроси: «А как тебе?» — и прими ответ без давления.","Практика: при первых признаках накала бери паузу и предлагай говорить по очереди."];
+ h+='<p style="margin-top:14px"><b>Зона роста: '+K[low][1]+'.</b> '+adv[low]+'</p></div>';
+ h+='<div class="card"><h2>Формула Я-сообщения</h2><div class="formula"><b>Когда</b> (факт без оценки) → <b>я чувствую</b> (чувство) → <b>потому что мне важно</b> (потребность) → <b>прошу</b> (конкретно).</div><p class="mut">Пример: «Когда ты берёшь мой телефон без спроса, мне неприятно: личная переписка важна для меня. Прошу спрашивать разрешения».</p>'+
+ '<h2 style="margin-top:18px">Правила культуры взаимоотношений</h2><ol><li>Моё «нет» — нормально, и мне не нужно оправдываться.</li><li>Чужое «нет» — тоже нормально. Отказ не равен отвержению.</li><li>Спорим о проблеме, а не о человеке.</li><li>Пауза лучше крика.</li><li>Если границы нарушают грубо или повторно, обратись за поддержкой к взрослому, руководителю или специалисту.</li></ol>'+
+ '<button class="btn" id="again">Сыграть ещё раз</button></div>';
+ app.innerHTML=h;window.scrollTo(0,0);document.getElementById("again").onclick=start}
+document.getElementById("theme").onclick=function(){var d=document.documentElement,c=d.getAttribute("data-theme");
+ var dark=c?c==="dark":window.matchMedia("(prefers-color-scheme: dark)").matches;d.setAttribute("data-theme",dark?"light":"dark")};
+start();
+</script>
+</body>
+</html>
